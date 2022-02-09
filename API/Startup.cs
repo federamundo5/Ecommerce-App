@@ -56,6 +56,7 @@ namespace API
         {
 
      
+
             if (env.IsDevelopment())
             {
             }
@@ -65,7 +66,7 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseStaticFiles();
+                 app.UseStaticFiles();
 
             app.UseCors("CorsPolicy");
             app.UseAuthorization();
