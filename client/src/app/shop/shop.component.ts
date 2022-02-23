@@ -15,7 +15,7 @@ export class ShopComponent implements OnInit {
   products: IProduct[];
    brands : IBrand[];
    types: IType[];
-   @ViewChild('search', {static: true})  searchTerm: ElementRef;
+   @ViewChild('search', {static: false})  searchTerm: ElementRef;
  
    totalCount: number;
   shopParams = new ShopParams();
