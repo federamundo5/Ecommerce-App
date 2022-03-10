@@ -10,10 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using API.Errors;
 using API.Extensions;
 using StackExchange.Redis;
-
-
-
-
+using Infrastructure.Identity;
 
 namespace API
 {
@@ -36,9 +33,19 @@ namespace API
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers();
             
+
+
+            //database for the store.
             services.AddDbContext<StoreContext>(x=>
               x.UseSqlite(_config.GetConnectionString
                 ("DefaultConnection")));
+
+
+
+            //database for identity
+                services.AddDbContext<AppIdentityDbContext>(x => {
+                    x.UseSqlite(_config.GetConnectionString("IdentityConnection"));
+                });
 
              services.AddSingleton<IConnectionMultiplexer>(c => {
                  var configuration =
@@ -49,9 +56,10 @@ namespace API
 
 
             services.AddAplicationServices();
+            services.AddIdentityServices(_config);
             services.AddSwaggerDocumentation();
 
-            //agrego cors para usarlo en angular
+            //agrego cors para usarlo en angular (Control de acceso https)
             services.AddCors(opt => {
                 opt.AddPolicy("CorsPolicy", policy => {
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
@@ -79,9 +87,11 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-                 app.UseStaticFiles();
+             app.UseStaticFiles();
 
             app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSwaggerDocumentation();
             app.UseEndpoints(endpoints =>
