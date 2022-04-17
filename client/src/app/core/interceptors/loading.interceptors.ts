@@ -12,7 +12,15 @@ export class LoadingInterceptor implements HttpInterceptor{
 
     }
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if(!req.url.includes('emailexists')){
+
+        if(req.method === "POST" && req.url.includes('orders')){
+            return next.handle(req);
+        }
+
+        if(req.url.includes('emailexists')){
+            return next.handle(req);
+        }
+
             this.busyService.busy();
             return next.handle(req).pipe(
           //COMMENT: Adding a delay before getting any HttpRequest to test Loading indicators.
@@ -25,4 +33,3 @@ export class LoadingInterceptor implements HttpInterceptor{
         
     }
 
-}
