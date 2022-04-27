@@ -14,8 +14,8 @@ namespace Infrastructure.Data.Config
         {
 
             builder.Property(p => p.Id).IsRequired();
-            builder.Property(P => P.Name).IsRequired().HasMaxLength(100);
-            builder.Property(P => P.Description).IsRequired().HasMaxLength(150);
+            builder.Property(P => P.Name).IsRequired();
+            builder.Property(P => P.Description).IsRequired();
             builder.Property(P => P.Price).HasColumnType("decimal(18,2)");
             builder.Property(P => P.PictureUrl).IsRequired();
             builder.HasOne(b => b.ProductBrand).WithMany()
